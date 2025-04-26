@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+
+const connectDB = require('./db/connection'); // Import the database connection
 const cookieParser = require('cookie-parser')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -11,9 +13,14 @@ const postModel = require('./models/post');
 const multer = require('multer');
 const path = require('path');
 app.use('/uploads', express.static('uploads'));
-
+require('dotenv').config(); // Load environment variables
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+const PORT = process.env.PORT || 5000;
+
+
+// Connect to MongoDB
+connectDB();
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -365,6 +372,6 @@ app.post('/logout', function(req, res) {
 });
 
 
-app.listen(3000, () => {
-    console.log("Server is running on http://localhost:3000");
-});
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
