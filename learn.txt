@@ -1,0 +1,33 @@
+Hey in this project we are going to learn about how the express server works with MongoDB .
+
+
+Fullstack App for blog creation 
+
+1. User could be able to register or login with proper authentication and authorization . Use bcrypt for hash password , use jsonwebtoken or cookie parser .
+2. If user successfully logged in then it should redirected to 
+"/profile" route and here show user details .Only logged in user could be able to create post .like post , show likes count edit post or delete post .
+3. Add logout functionality. 
+
+
+
+Project Planning
+
+Database 
+
+db Name :blogapp
+
+schema for users and posts .
+
+users schma - name , email , post [Array] , password + posts schema ref
+
+posts schema -title , likes[array],timestamp +users document ref
+
+
+type of Array , Mongoose.Schema.posts.object_id , ref : 'users
+
+
+IF SUCCESSFULLY CREATED A USER THEN ?
+
+Let the user logged in and redirect to /profile route or other protected Route .
+
+In Profile Route user would be able to see their details create post as 

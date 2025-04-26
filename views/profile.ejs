@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= user.username %> - Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // JavaScript function to confirm deletion
+    function confirmDelete(event, postId) {
+      event.preventDefault();  // Prevent the form submission immediately
+      const confirmation = confirm("Are you sure you want to delete this post?");
+      if (confirmation) {
+        // If the user clicks "OK", submit the form
+        document.getElementById('delete-form-' + postId).submit();
+      }
+    }
+  </script>
+</head>
+
+<body class="min-h-screen bg-gray-100 py-10 px-5">
+  <div class="max-w-5xl mx-auto bg-white shadow-xl rounded-lg p-10">
+
+    <!-- User Info -->
+    <div class="flex items-center gap-8 mb-10">
+      <img src="/<%= user.image.replace('uploads\\', 'uploads/') %>" 
+           alt="Profile Picture" 
+           class="w-28 h-28 rounded-full object-cover border-4 border-blue-500 shadow-md">
+
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800"><%= user.username %></h1>
+        <p class="text-gray-600"><%= user.email %></p>
+      </div>
+    </div>
+
+    <!-- Blogs Section -->
+    <h2 class="text-2xl font-semibold mb-6">All Your Blogs</h2>
+
+    <% if (posts.length > 0) { %>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <% posts.forEach(post => { %>
+          <div class="bg-gray-50 border rounded-lg p-6 hover:shadow-lg transition">
+            <!-- Post Image -->
+            <img src="/<%= post.image ? post.image.replace('uploads\\', 'uploads/') : 'default-image.jpg' %>" 
+                 alt="Post Image" 
+                 class="w-full h-40 object-cover rounded-md mb-4">
+
+            <!-- Post Title -->
+            <h3 class="text-xl font-bold text-gray-800 mb-2"><%= post.title %></h3>
+            
+            <!-- Post Content -->
+            <p class="text-gray-600 mb-4"><%= post.content.substring(0, 100) %>...</p>
+
+            <!-- Post Actions -->
+            <div class="flex justify-between items-center">
+              <!-- Likes Count -->
+              <p class="text-gray-500 text-sm">
+                Likes: <%= post.likes.length %>
+              </p>
+              <!-- Edit and Delete Actions -->
+              <div class="flex gap-4">
+                <a href="/posts/<%= post._id %>/edit" class="text-blue-500 hover:underline">Edit</a>
+                <form id="delete-form-<%= post._id %>" action="/posts/<%= post._id %>/delete" method="POST" class="inline">
+                  <!-- This button triggers the confirmation prompt -->
+                  <button type="button" onclick="confirmDelete(event, '<%= post._id %>')" class="text-red-500 hover:underline">Delete</button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Read More Link -->
+            <a href="/posts/<%= post._id %>" class="text-blue-500 hover:underline mt-2 block">
+               Read More
+            </a>
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p class="text-gray-500">No blogs created yet.</p>
+    <% } %>
+
+    <!-- Action Buttons -->
+    <!-- <div class="flex gap-4 mt-12">
+      <a href="/edit-profile" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-md">Edit Profile</a>
+      <a href="/logout" class="bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-md">Logout</a>
+    </div> -->
+
+  </div>
+</body>
+</html>
